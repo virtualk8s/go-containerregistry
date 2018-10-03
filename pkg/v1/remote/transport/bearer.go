@@ -16,6 +16,7 @@ package transport
 
 import (
 	"fmt"
+	"os"
 
 	"encoding/json"
 	"io/ioutil"
@@ -55,6 +56,8 @@ func (bt *bearerTransport) RoundTrip(in *http.Request) (*http.Response, error) {
 	// abstraction, so to avoid forwarding Authorization headers to places
 	// we are redirected, only set it when the authorization header matches
 	// the registry with which we are interacting.
+	println("############kkkk ", in.Host, bt.registry.RegistryStr())
+	println("###### hdr:", hdr)
 	if in.Host == bt.registry.RegistryStr() {
 		in.Header.Set("Authorization", hdr)
 	}
@@ -86,6 +89,13 @@ func (bt *bearerTransport) refresh() error {
 		return err
 	}
 	defer resp.Body.Close()
+	println("############### status code.", resp.StatusCode)
+	println("############### header starts.")
+
+	enc := json.NewEncoder(os.Stdout)
+	enc.Encode(resp.Header)
+
+	println("############### header ends.")
 
 	content, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
