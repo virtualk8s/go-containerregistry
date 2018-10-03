@@ -44,7 +44,6 @@ func push(_ *cobra.Command, args []string) {
 		log.Fatalf("parsing tag %q: %v", dst, err)
 	}
 	log.Printf("Pushing %v", t)
-
 	auth, err := authn.DefaultKeychain.Resolve(t.Registry)
 	if err != nil {
 		log.Fatalf("getting creds for %q: %v", t, err)

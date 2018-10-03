@@ -127,9 +127,10 @@ func (dk *defaultKeychain) Resolve(reg name.Registry) (Authenticator, error) {
 
 	// A global credential helper is next in precedence.
 	if cf.CredStore != "" {
+		log.Printf("######## cred store not empty. %s", cf.CredStore)
 		return &helper{name: cf.CredStore, domain: reg, r: &defaultRunner{}}, nil
 	}
-
+	log.Printf("########## hhhh %s", cf.CredStore)
 	// Lastly, the 'auths' section directly contains basic auth entries.
 	if cf.Auths != nil {
 		for _, form := range domainForms {

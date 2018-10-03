@@ -38,16 +38,18 @@ func Write(ref name.Reference, img v1.Image, auth authn.Authenticator, t http.Ro
 	scopes := scopesForUploadingImage(ref, ls)
 	tr, err := transport.New(ref.Context().Registry, auth, t, scopes)
 	if err != nil {
+		log.Printf("##### transport err: %s", err)
 		return err
 	}
 	w := writer{
-		ref:     ref,
-		client:  &http.Client{Transport: tr},
-		img:     img,
+		ref:    ref,
+		client: &http.Client{Transport: tr},
+		img:    img,
 	}
 
 	bs, err := img.BlobSet()
 	if err != nil {
+		log.Printf("##### BlobSet err: %s", err)
 		return err
 	}
 
@@ -80,9 +82,9 @@ func Write(ref name.Reference, img v1.Image, auth authn.Authenticator, t http.Ro
 
 // writer writes the elements of an image to a remote image reference.
 type writer struct {
-	ref     name.Reference
-	client  *http.Client
-	img     v1.Image
+	ref    name.Reference
+	client *http.Client
+	img    v1.Image
 }
 
 // url returns a url.Url for the specified path in the context of this remote image reference.
@@ -240,6 +242,7 @@ func (w *writer) commitBlob(h v1.Hash, location string) (err error) {
 func (w *writer) uploadOne(h v1.Hash) error {
 	existing, err := w.checkExisting(h)
 	if err != nil {
+		log.Printf("#####checkExisting err: %s", err)
 		return err
 	}
 	if existing {
@@ -249,18 +252,22 @@ func (w *writer) uploadOne(h v1.Hash) error {
 
 	location, mounted, err := w.initiateUpload(h)
 	if err != nil {
+		log.Printf("#####initiateUpload err: %s", err)
 		return err
 	} else if mounted {
 		log.Printf("mounted blob: %v", h)
 		return nil
 	}
 
+	log.Printf("#####location %s", location)
 	location, err = w.streamBlob(h, location)
 	if err != nil {
+		log.Printf("#####streamBlob err: %s", err)
 		return err
 	}
 
 	if err := w.commitBlob(h, location); err != nil {
+		log.Printf("#####commitBlob err: %s", err)
 		return err
 	}
 	log.Printf("pushed blob %v", h)

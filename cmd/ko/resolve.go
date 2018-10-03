@@ -98,6 +98,7 @@ func resolveFile(f string, no *NameOptions, lo *LocalOptions, opt ...build.Optio
 	if lo.Local || repoName == publish.LocalDomain {
 		pub = publish.NewDaemon(namer)
 	} else {
+		log.Printf("########## resolve. %s", repoName)
 		_, err := name.NewRepository(repoName, name.WeakValidation)
 		if err != nil {
 			return nil, fmt.Errorf("the environment variable KO_DOCKER_REPO must be set to a valid docker repository, got %v", err)
@@ -105,6 +106,7 @@ func resolveFile(f string, no *NameOptions, lo *LocalOptions, opt ...build.Optio
 
 		opts := []publish.Option{publish.WithAuthFromKeychain(authn.DefaultKeychain), publish.WithNamer(namer)}
 
+		log.Printf("########### before NewDefault %d", len(opts))
 		pub, err = publish.NewDefault(repoName, opts...)
 		if err != nil {
 			return nil, err

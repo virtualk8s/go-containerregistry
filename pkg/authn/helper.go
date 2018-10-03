@@ -89,6 +89,7 @@ func (h *helper) Authorization() (string, error) {
 	// fields used for Basic authentication.
 	ho := helperOutput{}
 	if err := json.Unmarshal([]byte(output), &ho); err != nil {
+		println("########## shit %s", err)
 		return "", err
 	}
 	b := Basic{Username: ho.Username, Password: ho.Secret}

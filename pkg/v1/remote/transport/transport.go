@@ -15,8 +15,10 @@
 package transport
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/google/go-containerregistry/pkg/authn"
 	"github.com/google/go-containerregistry/pkg/name"
@@ -44,10 +46,15 @@ func New(reg name.Registry, auth authn.Authenticator, t http.RoundTripper, scope
 
 	// First we ping the registry to determine the parameters of the authentication handshake
 	// (if one is even necessary).
+	println("####### reg:", reg.RegistryStr())
 	pr, err := ping(reg, t)
 	if err != nil {
+		println("#####ping err: ", err)
 		return nil, err
 	}
+	enc := json.NewEncoder(os.Stdout)
+	enc.Encode(pr.parameters)
+	println("##### ping succeeded: ", pr.challenge)
 
 	switch pr.challenge.Canonical() {
 	case anonymous:
@@ -75,6 +82,7 @@ func New(reg name.Registry, auth authn.Authenticator, t http.RoundTripper, scope
 			scopes:   scopes,
 		}
 		if err := bt.refresh(); err != nil {
+			println("######## bt refresh failed.", err.Error())
 			return nil, err
 		}
 		return bt, nil

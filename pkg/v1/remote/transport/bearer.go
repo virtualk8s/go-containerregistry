@@ -99,6 +99,7 @@ func (bt *bearerTransport) refresh() error {
 	}
 
 	var response tokenResponse
+	println("####### content.", string(content))
 	if err := json.Unmarshal(content, &response); err != nil {
 		return err
 	}

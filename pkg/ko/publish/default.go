@@ -91,8 +91,12 @@ func (d *defalt) Publish(img v1.Image, s string) (name.Reference, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	log.Printf("Publishing %v", tag)
+	log.Printf("###### default publish %v", tag)
+	// debug.PrintStack()
 	if err := remote.Write(tag, img, d.auth, d.t); err != nil {
+		log.Printf("###### %s", err)
 		return nil, err
 	}
 	h, err := img.Digest()
