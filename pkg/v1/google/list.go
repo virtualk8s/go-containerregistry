@@ -95,6 +95,7 @@ type Tags struct {
 }
 
 func List(repo name.Repository, auth authn.Authenticator, t http.RoundTripper) (*Tags, error) {
+	println("############ google List", repo.RegistryStr())
 	scopes := []string{repo.Scope(transport.PullScope)}
 	tr, err := transport.New(repo.Registry, auth, t, scopes)
 	if err != nil {

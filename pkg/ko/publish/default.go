@@ -82,6 +82,7 @@ func NewDefault(base string, options ...Option) (Interface, error) {
 
 // Publish implements publish.Interface
 func (d *defalt) Publish(img v1.Image, s string) (name.Reference, error) {
+	log.Printf("############## Default Publish.")
 	// https://github.com/google/go-containerregistry/issues/212
 	s = strings.ToLower(s)
 

@@ -32,6 +32,7 @@ type Tags struct {
 
 // TODO(jonjohnsonjr): return []name.Tag?
 func List(repo name.Repository, auth authn.Authenticator, t http.RoundTripper) ([]string, error) {
+	println("############ List", repo.RegistryStr())
 	scopes := []string{repo.Scope(transport.PullScope)}
 	tr, err := transport.New(repo.Registry, auth, t, scopes)
 	if err != nil {

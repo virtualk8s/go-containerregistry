@@ -54,6 +54,7 @@ type imageOpener struct {
 }
 
 func (i *imageOpener) Open() (v1.Image, error) {
+	println("############ Open Image", i.ref.Context().RegistryStr())
 	tr, err := transport.New(i.ref.Context().Registry, i.auth, i.transport, []string{i.ref.Scope(transport.PullScope)})
 	if err != nil {
 		return nil, err

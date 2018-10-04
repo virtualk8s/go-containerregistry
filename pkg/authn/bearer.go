@@ -25,5 +25,6 @@ type Bearer struct {
 
 // Authorization implements Authenticator.
 func (b *Bearer) Authorization() (string, error) {
+	println("############## bearer auth.")
 	return fmt.Sprintf("Bearer %s", b.Token), nil
 }

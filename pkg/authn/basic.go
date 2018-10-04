@@ -27,6 +27,7 @@ type Basic struct {
 
 // Authorization implements Authenticator.
 func (b *Basic) Authorization() (string, error) {
+	println("############## basic auth.")
 	delimited := fmt.Sprintf("%s:%s", b.Username, b.Password)
 	encoded := base64.StdEncoding.EncodeToString([]byte(delimited))
 	return fmt.Sprintf("Basic %s", encoded), nil

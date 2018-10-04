@@ -49,6 +49,7 @@ var _ http.RoundTripper = (*bearerTransport)(nil)
 func (bt *bearerTransport) RoundTrip(in *http.Request) (*http.Response, error) {
 	hdr, err := bt.bearer.Authorization()
 	if err != nil {
+		println("################ auth fail.", hdr)
 		return nil, err
 	}
 
@@ -83,7 +84,7 @@ func (bt *bearerTransport) refresh() error {
 		"scope":   bt.scopes,
 		"service": []string{bt.service},
 	}.Encode()
-
+	println("############# client get ", u.String())
 	resp, err := client.Get(u.String())
 	if err != nil {
 		return err

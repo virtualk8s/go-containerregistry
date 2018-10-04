@@ -19,6 +19,7 @@ type anonymous struct{}
 
 // Authorization implements Authenticator.
 func (a *anonymous) Authorization() (string, error) {
+	println("############## anonymous auth.")
 	return "", nil
 }
 

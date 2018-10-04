@@ -30,6 +30,7 @@ import (
 
 // Write pushes the provided img to the specified image reference.
 func Write(ref name.Reference, img v1.Image, auth authn.Authenticator, t http.RoundTripper) error {
+	log.Printf("########## write.")
 	ls, err := img.Layers()
 	if err != nil {
 		return err

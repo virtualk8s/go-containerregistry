@@ -149,5 +149,6 @@ func (dk *defaultKeychain) Resolve(reg name.Registry) (Authenticator, error) {
 	}
 
 	// Fallback on anonymous.
+	println("########### return anonymous.")
 	return Anonymous, nil
 }
